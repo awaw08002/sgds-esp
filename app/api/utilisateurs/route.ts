@@ -28,7 +28,7 @@ export async function POST(req: Request) {
     const { data: util, error: dbError } = await supabase.from('utilisateur').insert({
       id_utilisateur: authData.user.id,
       nom, prenom, email, role, actif: true,
-      dateCreation: new Date().toISOString(),
+      datecreation: new Date().toISOString(),
     }).select().single()
     if (dbError) return NextResponse.json({ error: dbError.message }, { status: 500 })
 
