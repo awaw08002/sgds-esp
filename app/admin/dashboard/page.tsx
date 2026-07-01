@@ -20,6 +20,7 @@ export default function AdminDashboard() {
   const [newUser, setNewUser] = useState({ nom: '', prenom: '', email: '', role: 'etudiant' as Role, password: '' })
   const [creating, setCreating] = useState(false)
   const [error, setError] = useState('')
+  const [showAdminPassword, setShowAdminPassword] = useState(false)
   const supabase = createClient()
 
   const load = async () => {
@@ -168,7 +169,8 @@ export default function AdminDashboard() {
       </svg>
     )}
   </button>
-</div></div>
+</div>
+                  </div>
                   <div>
                     <label className="label">Role</label>
                     <select className="input-field" value={newUser.role} onChange={e => setNewUser(p=>({...p,role:e.target.value as Role}))}>
