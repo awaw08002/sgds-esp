@@ -11,7 +11,7 @@ function getAdminClient() {
 
 export async function GET() {
   const supabase = getAdminClient()
-  const { data, error } = await supabase.from('utilisateur').select('*').order('dateCreation', { ascending: false })
+  const { data, error } = await supabase.from('utilisateur').select('*').order('datecreation', { ascending: false })
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
   return NextResponse.json(data)
 }
@@ -28,6 +28,7 @@ export async function POST(req: Request) {
     const { data: util, error: dbError } = await supabase.from('utilisateur').insert({
       id_utilisateur: authData.user.id,
       nom, prenom, email, role, actif: true,
+      motdepasse: 'hashed',
       datecreation: new Date().toISOString(),
     }).select().single()
     if (dbError) return NextResponse.json({ error: dbError.message }, { status: 500 })
