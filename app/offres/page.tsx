@@ -8,17 +8,18 @@ import { fr } from 'date-fns/locale'
 
 async function getOffres() {
   try {
-    const { createClient } = await import('@supabase/supabase-js')
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/offre_stage?active=eq.true&order=datepublication.desc`,
+      {
+        headers: {
+          'apikey': process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!}`,
+        },
+        cache: 'no-store',
+      }
     )
-    const { data } = await supabase
-      .from('offre_stage')
-      .select('*')
-      .eq('active', true)
-      .order('datepublication', { ascending: false })
-    return data || []
+    if (!res.ok) return []
+    return await res.json()
   } catch (e) {
     console.error(e)
     return []
