@@ -43,7 +43,7 @@ export default async function OffresPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {offres.map(o => (
+            {offres.map((o: any) => (
               <div key={o.id_offre} className="bg-white rounded-2xl shadow-md border border-slate-100 p-6 hover:shadow-xl transition-shadow">
                 <div className="flex items-start justify-between mb-4">
                   <div className="w-12 h-12 bg-[#1E3A5F]/10 rounded-xl flex items-center justify-center">
