@@ -1,6 +1,5 @@
 'use client'
 export const dynamic = 'force-dynamic'
-
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -27,15 +26,26 @@ export default function EncadrantValidationPage() {
       const { data: { user } } = await supabase.auth.getUser()
       if (user) {
         setEncadrantUserId(user.id)
-        const { data: enc } = await supabase.from('encadrant').select('id_encadrant').eq('id_utilisateur', user.id).single()
+        const { data: enc } = await supabase
+          .from('encadrant')
+          .select('id_encadrant')
+          .eq('id_utilisateur', user.id)
+          .single()
         if (enc) setEncadrantId(enc.id_encadrant)
       }
       const { data } = await supabase
         .from('demande_stage')
-        .select('*, etudiant(*, utilisateur(nom, prenom, email)), commentaire(*), piece_jointe(*)')
+        .select('*, etudiant(*, utilisateur:id_utilisateur(nom, prenom, email)), commentaire(*), piece_jointe(*)')
         .eq('id_demande', id)
         .single()
-      setDemande(data)
+
+      // Charger les conventions separement
+      const { data: conv } = await supabase
+        .from('convention_stage')
+        .select('*')
+        .eq('id_demande', id)
+
+      setDemande({ ...data, convention_stage: conv || [] })
       setLoading(false)
     }
     load()
@@ -44,10 +54,22 @@ export default function EncadrantValidationPage() {
   const handleDecision = async (decision: 'validee' | 'rejetee') => {
     setSubmitting(true)
     try {
-      await supabase.from('demande_stage').update({ statut: decision, datedecision: new Date().toISOString(), id_encadrant: encadrantId }).eq('id_demande', id)
+      await supabase
+        .from('demande_stage')
+        .update({
+          statut: decision,
+          datedecision: new Date().toISOString(),
+          id_encadrant: encadrantId
+        })
+        .eq('id_demande', id)
 
       if (commentaire.trim()) {
-        await supabase.from('commentaire').insert({ contenu: commentaire, datecreation: new Date().toISOString(), id_demande: id, id_encadrant: encadrantId })
+        await supabase.from('commentaire').insert({
+          contenu: commentaire,
+          datecreation: new Date().toISOString(),
+          id_demande: id,
+          id_encadrant: encadrantId
+        })
       }
 
       // Notifier etudiant
@@ -65,18 +87,6 @@ export default function EncadrantValidationPage() {
         })
       }
 
-      // Generer convention si validee
-      if (decision === 'validee') {
-        const numConv = 'CONV-' + new Date().getFullYear() + '-' + String(Math.floor(1000 + Math.random() * 9000))
-        await supabase.from('convention_stage').insert({
-          numeroconvention: numConv,
-          cheminfichier: 'conventions/' + numConv + '.pdf',
-          dategeneration: new Date().toISOString(),
-          statut: 'generee',
-          id_demande: id,
-        })
-      }
-
       router.push('/encadrant/dashboard?success=1')
     } catch (err) {
       console.error(err)
@@ -84,8 +94,16 @@ export default function EncadrantValidationPage() {
     setSubmitting(false)
   }
 
-  if (loading) return <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center"><div className="text-[#1E3A5F] font-semibold">Chargement...</div></div>
-  if (!demande) return <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center"><div className="text-red-600">Demande introuvable.</div></div>
+  if (loading) return (
+    <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center">
+      <div className="text-[#1E3A5F] font-semibold">Chargement...</div>
+    </div>
+  )
+  if (!demande) return (
+    <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center">
+      <div className="text-red-600">Demande introuvable.</div>
+    </div>
+  )
 
   const isDecidable = demande.statut === 'en_attente'
 
@@ -99,18 +117,24 @@ export default function EncadrantValidationPage() {
           <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full">
             <h3 className="text-xl font-bold text-[#1E3A5F] mb-3">Confirmer la decision</h3>
             <p className="text-[#64748B] mb-6 text-sm">
-              Etes-vous sur de vouloir <strong>{confirmation === 'valider' ? 'valider' : 'rejeter'}</strong> la demande <strong>{demande.referenceunique}</strong> ?
-              Cette action est irreversible.
+              Etes-vous sur de vouloir <strong>{confirmation === 'valider' ? 'valider' : 'rejeter'}</strong> la demande{' '}
+              <strong>{demande.referenceunique}</strong> ? Cette action est irreversible.
             </p>
             <div className="flex gap-3">
-              <button onClick={() => setConfirmation(null)}
+              <button
+                onClick={() => setConfirmation(null)}
                 className="flex-1 border-2 border-slate-200 text-[#64748B] font-semibold py-3 rounded-xl hover:border-[#1E3A5F] transition-colors">
                 Annuler
               </button>
               <button
-                onClick={() => { handleDecision(confirmation === 'valider' ? 'validee' : 'rejetee'); setConfirmation(null) }}
+                onClick={() => {
+                  handleDecision(confirmation === 'valider' ? 'validee' : 'rejetee')
+                  setConfirmation(null)
+                }}
                 disabled={submitting}
-                className={`flex-1 text-white font-bold py-3 rounded-xl transition-colors disabled:opacity-60 ${confirmation === 'valider' ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700'}`}>
+                className={`flex-1 text-white font-bold py-3 rounded-xl transition-colors disabled:opacity-60 ${
+                  confirmation === 'valider' ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700'
+                }`}>
                 {confirmation === 'valider' ? 'Valider' : 'Rejeter'}
               </button>
             </div>
@@ -120,7 +144,10 @@ export default function EncadrantValidationPage() {
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-24 pb-12">
         <div className="mb-8">
-          <Link href="/encadrant/dashboard" className="text-[#64748B] hover:text-[#1E3A5F] text-sm font-medium transition-colors">Retour au tableau de bord</Link>
+          <Link href="/encadrant/dashboard"
+            className="text-[#64748B] hover:text-[#1E3A5F] text-sm font-medium transition-colors">
+            Retour au tableau de bord
+          </Link>
           <div className="flex items-center gap-4 mt-4">
             <h1 className="text-3xl font-black text-[#1E3A5F]">Examen de la demande</h1>
             <DemandeBadge statut={demande.statut} />
@@ -129,11 +156,14 @@ export default function EncadrantValidationPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
+
             {/* Infos etudiant */}
             <div className="bg-white rounded-2xl shadow-md border border-slate-100 p-6">
               <h2 className="text-lg font-bold text-[#1E3A5F] mb-4">Etudiant</h2>
               <div className="text-sm space-y-1">
-                <p className="font-semibold text-[#1E293B]">{demande.etudiant?.utilisateur?.prenom} {demande.etudiant?.utilisateur?.nom}</p>
+                <p className="font-semibold text-[#1E293B]">
+                  {demande.etudiant?.utilisateur?.prenom} {demande.etudiant?.utilisateur?.nom}
+                </p>
                 <p className="text-[#64748B]">{demande.etudiant?.utilisateur?.email}</p>
                 <p className="text-[#64748B]">Matricule : {demande.etudiant?.matricule}</p>
                 <p className="text-[#64748B]">{demande.etudiant?.filiere} — {demande.etudiant?.niveau}</p>
@@ -148,8 +178,12 @@ export default function EncadrantValidationPage() {
                   ['Reference', demande.referenceunique],
                   ['Entreprise', demande.entreprise],
                   ['Adresse', demande.adresseentreprise || 'Non precisee'],
-                  ['Periode', format(new Date(demande.datedebut), 'dd/MM/yyyy', {locale:fr}) + ' au ' + format(new Date(demande.datefin), 'dd/MM/yyyy', {locale:fr})],
-                  ['Soumise le', format(new Date(demande.datesoumission), 'dd MMMM yyyy', {locale:fr})],
+                  ['Periode',
+                    format(new Date(demande.datedebut), 'dd/MM/yyyy', { locale: fr }) +
+                    ' au ' +
+                    format(new Date(demande.datefin), 'dd/MM/yyyy', { locale: fr })
+                  ],
+                  ['Soumise le', format(new Date(demande.datesoumission), 'dd MMMM yyyy', { locale: fr })],
                 ].map(([l, v], i) => (
                   <div key={i}>
                     <dt className="text-[#64748B] font-medium mb-0.5">{l}</dt>
@@ -170,38 +204,79 @@ export default function EncadrantValidationPage() {
               <div className="bg-white rounded-2xl shadow-md border border-slate-100 p-6">
                 <h2 className="text-lg font-bold text-[#1E3A5F] mb-3">Commentaire</h2>
                 <textarea
-                  value={commentaire} onChange={e => setCommentaire(e.target.value)}
-                  rows={4} placeholder="Motivez votre decision (obligatoire en cas de rejet)..."
-                  className="input-field resize-none" />
+                  value={commentaire}
+                  onChange={e => setCommentaire(e.target.value)}
+                  rows={4}
+                  placeholder="Motivez votre decision (obligatoire en cas de rejet)..."
+                  className="input-field resize-none"
+                />
+              </div>
+            )}
+
+            {/* Commentaires existants */}
+            {demande.commentaire?.length > 0 && (
+              <div className={`rounded-2xl p-6 border ${
+                demande.statut === 'rejetee' ? 'bg-red-50 border-red-100' : 'bg-green-50 border-green-100'
+              }`}>
+                <h2 className="text-lg font-bold text-[#1E3A5F] mb-3">Commentaire de decision</h2>
+                {demande.commentaire.map((c: any) => (
+                  <div key={c.id_commentaire}>
+                    <p className="text-[#1E293B] text-sm leading-relaxed">{c.contenu}</p>
+                    <p className="text-[#64748B] text-xs mt-2">
+                      {format(new Date(c.datecreation), 'dd MMMM yyyy à HH:mm', { locale: fr })}
+                    </p>
+                  </div>
+                ))}
               </div>
             )}
           </div>
 
-          {/* Actions */}
+          {/* Colonne droite */}
           <div className="space-y-4">
+
+            {/* Actions */}
             {isDecidable && (
               <div className="bg-white rounded-2xl shadow-md border border-slate-100 p-6 space-y-3">
                 <h3 className="font-bold text-[#1E3A5F] mb-4">Prendre une decision</h3>
-                <button onClick={() => setConfirmation('valider')} disabled={submitting}
+                <button
+                  onClick={() => setConfirmation('valider')}
+                  disabled={submitting}
                   className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl transition-colors disabled:opacity-60">
                   Valider la demande
                 </button>
-                <button onClick={() => setConfirmation('rejeter')} disabled={submitting || !commentaire.trim()}
+                <button
+                  onClick={() => setConfirmation('rejeter')}
+                  disabled={submitting || !commentaire.trim()}
                   className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl transition-colors disabled:opacity-60">
                   Rejeter la demande
                 </button>
-                {!commentaire.trim() && <p className="text-xs text-[#64748B] text-center">Un commentaire est requis pour rejeter</p>}
+                {!commentaire.trim() && (
+                  <p className="text-xs text-[#64748B] text-center">
+                    Un commentaire est requis pour rejeter
+                  </p>
+                )}
               </div>
             )}
 
+            {/* Pieces jointes */}
             {demande.piece_jointe?.length > 0 && (
               <div className="bg-white rounded-2xl shadow-md border border-slate-100 p-6">
                 <h3 className="font-bold text-[#1E3A5F] mb-3">Pieces jointes</h3>
-                <ul className="space-y-2">
+                <ul className="space-y-3">
                   {demande.piece_jointe.map((p: any) => (
-                    <li key={p.id_piece} className="flex items-center gap-3 text-sm text-[#64748B]">
-                      <span className="w-2 h-2 rounded-full bg-[#F59E0B] flex-shrink-0"></span>
-                      {p.nomfichier}
+                    <li key={p.id_piece}
+                      className="flex items-center justify-between text-sm border-b border-slate-50 pb-2 last:border-0 last:pb-0">
+                      <div className="flex items-center gap-2 text-[#64748B]">
+                        <span className="w-2 h-2 rounded-full bg-[#F59E0B] flex-shrink-0"></span>
+                        <span className="truncate max-w-[120px]">{p.nomfichier}</span>
+                      </div>
+                      <a
+                        href={'/api/pieces-jointes/download?path=' + encodeURIComponent(p.cheminfichier || '')}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[#F59E0B] hover:text-[#D97706] font-semibold text-xs transition-colors flex-shrink-0 ml-2">
+                        Voir
+                      </a>
                     </li>
                   ))}
                 </ul>
