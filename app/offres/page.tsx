@@ -56,7 +56,7 @@ export default async function OffresPage() {
                 {o.description && <p className="text-[#64748B] text-sm leading-relaxed mb-4 line-clamp-3">{o.description}</p>}
                 <div className="flex items-center justify-between mt-auto pt-4 border-t border-slate-100">
                   <p className="text-xs text-slate-400">{o.datepublication ? format(new Date(o.datepublication), 'dd MMM yyyy', {locale:fr}) : '—'}</p>
-                  <a href="/login" className="text-[#F59E0B] hover:text-[#D97706] font-semibold text-sm transition-colors">Postuler</a>
+                  <a href={`/offres/${o.id_offre}/postuler`} className="text-[#F59E0B] hover:text-[#D97706] font-semibold text-sm transition-colors">Postuler</a>
                 </div>
               </div>
             ))}
