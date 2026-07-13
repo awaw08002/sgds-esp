@@ -185,11 +185,44 @@ export default function ServiceStagesDashboard() {
                 <div className="space-y-4">
                   <div>
                     <label className="label">Titre</label>
-                    <input className="input-field" value={newOffre.titre} onChange={e => setNewOffre(p => ({...p, titre: e.target.value}))} placeholder="Ex: Stage Developpeur Web" />
+                    <select className="input-field" value={newOffre.titre} onChange={e => setNewOffre(p => ({...p, titre: e.target.value}))}>
+  <option value="">-- Selectionnez un titre --</option>
+  <option>Stage Developpeur Web</option>
+  <option>Stage Developpeur Mobile</option>
+  <option>Stage Data Analyst</option>
+  <option>Stage Ingenieur Reseaux</option>
+  <option>Stage Cybersecurite</option>
+  <option>Stage DevOps</option>
+  <option>Stage Intelligence Artificielle</option>
+  <option>Stage Genie Logiciel</option>
+  <option>Stage Administrateur Systeme</option>
+  <option>Stage UI/UX Designer</option>
+  <option>Stage Chef de Projet IT</option>
+  <option>Stage Support Technique</option>
+</select>
                   </div>
                   <div>
                     <label className="label">Entreprise</label>
-                    <input className="input-field" value={newOffre.entreprise} onChange={e => setNewOffre(p => ({...p, entreprise: e.target.value}))} placeholder="Ex: Sonatel" />
+                    <select className="input-field" value={newOffre.entreprise} onChange={e => setNewOffre(p => ({...p, entreprise: e.target.value}))}>
+  <option value="">-- Selectionnez une entreprise --</option>
+  <option>Sonatel</option>
+  <option>Orange Senegal</option>
+  <option>Expresso Senegal</option>
+  <option>Free Senegal</option>
+  <option>CTIC Dakar</option>
+  <option>Gainde 2000</option>
+  <option>Volkeno</option>
+  <option>Wave Mobile Money</option>
+  <option>Wari</option>
+  <option>InTouch</option>
+  <option>La Poste Senegal</option>
+  <option>Ecobank Senegal</option>
+  <option>SGBS</option>
+  <option>Total Energies Senegal</option>
+  <option>Ageroute</option>
+  <option>ADIE</option>
+  <option>Autre</option>
+</select>
                   </div>
                   <div>
                     <label className="label">Description</label>
