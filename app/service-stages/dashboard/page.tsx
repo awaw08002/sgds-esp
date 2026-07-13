@@ -202,8 +202,28 @@ export default function ServiceStagesDashboard() {
 </select>
                   </div>
                   <div>
-                    <label className="label">Entreprise</label>
-                  </div>
+  <label className="label">Entreprise</label>
+  <select className="input-field" value={newOffre.entreprise} onChange={e => setNewOffre(p => ({...p, entreprise: e.target.value}))}>
+    <option value="">-- Selectionnez une entreprise --</option>
+    <option>Sonatel</option>
+    <option>Orange Senegal</option>
+    <option>Expresso Senegal</option>
+    <option>Free Senegal</option>
+    <option>CTIC Dakar</option>
+    <option>Gainde 2000</option>
+    <option>Volkeno</option>
+    <option>Wave Mobile Money</option>
+    <option>Wari</option>
+    <option>InTouch</option>
+    <option>La Poste Senegal</option>
+    <option>Ecobank Senegal</option>
+    <option>SGBS</option>
+    <option>Total Energies Senegal</option>
+    <option>Ageroute</option>
+    <option>ADIE</option>
+    <option>Autre</option>
+  </select>
+</div>
                   <div>
                     <label className="label">Description</label>
                     <textarea className="input-field resize-none" rows={3} value={newOffre.description} onChange={e => setNewOffre(p => ({...p, description: e.target.value}))} />
