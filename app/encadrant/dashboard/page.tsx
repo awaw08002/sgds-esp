@@ -42,7 +42,7 @@ export default function EncadrantDashboard() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12">
         <div className="mb-10">
           <h1 className="text-3xl font-black text-[#1E3A5F]">Tableau de bord encadrant</h1>
-          <p className="text-[#64748B] mt-1">Bonjour {user?.prenom} {user?.nom} — {user?.encadrant?.departement || 'Departement Genie Informatique'}</p>
+          <p className="text-[#64748B] mt-1">Bonjour {user?.prenom} {user?.nom} {user?.encadrant?.departement}</p>
         </div>
 
         {/* Stats */}
