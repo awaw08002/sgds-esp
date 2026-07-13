@@ -54,7 +54,8 @@ export default function NouvelleDemandePage() {
       // Upload pieces jointes
       for (const fichier of fichiers) {
         const path = demande.id_demande + '/' + fichier.name
-        await supabase.storage.from('pieces-jointes').upload(path, fichier)
+        const { error: uploadError } = await supabase.storage.from('pieces-jointes').upload(path, fichier)
+if (uploadError) console.error('Upload error:', uploadError)
         await supabase.from('piece_jointe').insert({
           typeDocument: fichier.name.endsWith('.pdf') ? 'PDF' : 'Document',
           nomFichier: fichier.name,
