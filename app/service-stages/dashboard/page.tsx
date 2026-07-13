@@ -15,7 +15,7 @@ export default function ServiceStagesDashboard() {
   const [user, setUser] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState<'demandes' | 'offres'>('demandes')
-  const [newOffre, setNewOffre] = useState({ titre: '', entreprise: '', description: '' })
+  const [newOffre, setNewOffre] = useState({ titre: '', entreprise: '', description: '', niveauetude: 'L2' })
   const [showOffresForm, setShowOffresForm] = useState(false)
   const supabase = createClient()
 
@@ -203,26 +203,6 @@ export default function ServiceStagesDashboard() {
                   </div>
                   <div>
                     <label className="label">Entreprise</label>
-                    <select className="input-field" value={newOffre.entreprise} onChange={e => setNewOffre(p => ({...p, entreprise: e.target.value}))}>
-  <option value="">-- Selectionnez une entreprise --</option>
-  <option>Sonatel</option>
-  <option>Orange Senegal</option>
-  <option>Expresso Senegal</option>
-  <option>Free Senegal</option>
-  <option>CTIC Dakar</option>
-  <option>Gainde 2000</option>
-  <option>Volkeno</option>
-  <option>Wave Mobile Money</option>
-  <option>Wari</option>
-  <option>InTouch</option>
-  <option>La Poste Senegal</option>
-  <option>Ecobank Senegal</option>
-  <option>SGBS</option>
-  <option>Total Energies Senegal</option>
-  <option>Ageroute</option>
-  <option>ADIE</option>
-  <option>Autre</option>
-</select>
                   </div>
                   <div>
                     <label className="label">Description</label>
