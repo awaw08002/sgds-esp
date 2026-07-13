@@ -184,7 +184,7 @@ export default function NouvelleDemandePage() {
                   onChange={e => setFichiers(Array.from(e.target.files || []))}
                   className="hidden" id="files" />
                 <label htmlFor="files" className="cursor-pointer">
-                  <p className="text-[#64748B] text-sm mb-1">Glissez vos fichiers ici ou</p>
+                  <p className="text-[#64748B] text-sm mb-1">Glissez votre cv et lettre de motivation</p>
                   <span className="text-[#F59E0B] font-semibold text-sm hover:text-[#D97706]">cliquez pour selectionner</span>
                   <p className="text-xs text-slate-400 mt-2">PDF, DOC, DOCX acceptes</p>
                 </label>
