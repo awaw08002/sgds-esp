@@ -78,7 +78,7 @@ export default function LoginPage() {
             </div>
             <div>
               <span className="text-white font-black text-2xl block leading-none tracking-tight">SGDS</span>
-              <span className="text-white/70 text-xs font-medium">ESP — UCAD</span>
+              <span className="text-white/70 text-xs font-medium">ESP/UCAD</span>
             </div>
           </Link>
         </div>
@@ -198,14 +198,14 @@ export default function LoginPage() {
 
           <p className="text-center text-sm text-slate-500 mt-5">
             <Link href="/" className="text-[#1E3A5F] hover:text-[#F59E0B] font-semibold transition-colors">
-              Retour a l accueil
+              Accueil
             </Link>
           </p>
         </div>
 
         {/* Footer */}
         <p className="text-center text-white/50 text-xs mt-6">
-          &copy; {new Date().getFullYear()} SGDS — ESP/UCAD. Tous droits reserves.
+          &copy; {new Date().getFullYear()} Systeme de Gestion des Demandes de Stages ESP/UCAD. Tous droits reserves.
         </p>
       </div>
     </div>
