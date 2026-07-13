@@ -205,7 +205,7 @@ export default function LoginPage() {
 
         {/* Footer */}
         <p className="text-center text-white/50 text-xs mt-6">
-          &copy; {new Date().getFullYear()} Systeme de Gestion des Demandes de Stages ESP/UCAD. Tous droits reserves.
+          &copy; {new Date().getFullYear()} ESP/UCAD. Tous droits reserves.
         </p>
       </div>
     </div>
