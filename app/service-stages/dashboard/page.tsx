@@ -76,7 +76,7 @@ export default function ServiceStagesDashboard() {
       active: true,
       id_utilisateur: u?.id,
     })
-    setNewOffre({ titre: '', entreprise: '', description: '' })
+    setNewOffre({ titre: '', entreprise: '', description: '', niveauetude: ''})
     setShowOffresForm(false)
     load()
   }
@@ -208,6 +208,21 @@ export default function ServiceStagesDashboard() {
                     <label className="label">Description</label>
                     <textarea className="input-field resize-none" rows={3} value={newOffre.description} onChange={e => setNewOffre(p => ({...p, description: e.target.value}))} />
                   </div>
+                <div>
+  <label className="label">Niveau d'etudes requis</label>
+  <select className="input-field" value={newOffre.niveauetude}
+    onChange={e => setNewOffre(p => ({...p, niveauetude: e.target.value}))}>
+    <option value="L1">L1</option>
+    <option value="L2">L2</option>
+    <option value="L3">L3</option>
+    <option value="L2 ou plus">L2 ou plus</option>
+    <option value="L3 ou plus">L3 ou plus</option>
+    <option value="M1">M1</option>
+    <option value="M2">M2</option>
+    <option value="M1 ou M2">M1 ou M2</option>
+    <option value="Tous niveaux">Tous niveaux</option>
+  </select>
+</div>
                   <button onClick={publierOffre} className="bg-[#1E3A5F] hover:bg-[#162d4a] text-white font-bold px-6 py-3 rounded-xl transition-colors">Publier</button>
                 </div>
               </div>
