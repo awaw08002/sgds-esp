@@ -73,7 +73,7 @@ export default function LoginPage() {
         {/* Logo */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex flex-col items-center gap-2">
-            <div className="w-14 h-14 bg-[#F59E0B] rounded-2xl flex items-center justify-center shadow-xl">
+            <div className="w-16 h-16 bg-[#F59E0B] rounded-2xl flex items-center justify-center shadow-xl">
               <span className="text-white font-black text-2xl">SGDS</span>
             </div>
             <div>
