@@ -136,8 +136,30 @@ export default function NouvelleDemandePage() {
             </div>
             <div className="md:col-span-2">
               <label className="label">Adresse de l'entreprise</label>
-              <input name="adresseEntreprise" value={form.adresseEntreprise} onChange={handleChange}
-                className="input-field" placeholder="Ex: Plateau, Dakar" />
+              <select name="adresseEntreprise" value={form.adresseEntreprise}
+  onChange={(e) => setForm(prev => ({ ...prev, adresseEntreprise: e.target.value }))}
+  className="input-field">
+  <option value="">-- Selectionnez une adresse --</option>
+  <option>Plateau, Dakar</option>
+  <option>Almadies, Dakar</option>
+  <option>Mermoz, Dakar</option>
+  <option>Fann, Dakar</option>
+  <option>Point E, Dakar</option>
+  <option>Ouakam, Dakar</option>
+  <option>Yoff, Dakar</option>
+  <option>Ngor, Dakar</option>
+  <option>Sacre Coeur, Dakar</option>
+  <option>Grand Yoff, Dakar</option>
+  <option>Parcelles Assainies, Dakar</option>
+  <option>Pikine, Dakar</option>
+  <option>Guediawaye, Dakar</option>
+  <option>Rufisque, Dakar</option>
+  <option>Thies</option>
+  <option>Saint-Louis</option>
+  <option>Ziguinchor</option>
+  <option>Kaolack</option>
+  <option>Autre</option>
+</select>
             </div>
             <div>
               <label className="label">Date de debut *</label>
