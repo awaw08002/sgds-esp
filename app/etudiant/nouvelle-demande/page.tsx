@@ -107,7 +107,8 @@ export default function NouvelleDemandePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="md:col-span-2">
               <label className="label">Nom de l'entreprise *</label>
-              <select name="entreprise" value={form.entreprise} onChange={handleChange}
+              <select name="entreprise" value={form.entreprise}
+  onChange={(e) => setForm(prev => ({ ...prev, entreprise: e.target.value }))}
   className="input-field" required>
   <option value="">-- Selectionnez une entreprise --</option>
   <option>Sonatel</option>
