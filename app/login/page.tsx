@@ -73,12 +73,12 @@ export default function LoginPage() {
         {/* Logo */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex flex-col items-center gap-2">
-            <div className="w-16 h-16 bg-[#F59E0B] rounded-2xl flex items-center justify-center shadow-xl">
+            <div className="w-18 h-18 bg-[#F59E0B] rounded-2xl flex items-center justify-center shadow-xl">
               <span className="text-white font-black text-2xl">SGDS</span>
             </div>
             <div>
               <span className="text-white font-black text-2xl block leading-none tracking-tight">Systeme de Gestion des Demandes de Stage</span>
-              <span className="text-white/70 text-xs font-medium">ESP/UCAD</span>
+              
             </div>
           </Link>
         </div>
