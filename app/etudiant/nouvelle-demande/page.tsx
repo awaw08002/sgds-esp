@@ -107,8 +107,31 @@ export default function NouvelleDemandePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="md:col-span-2">
               <label className="label">Nom de l'entreprise *</label>
-              <input name="entreprise" value={form.entreprise} onChange={handleChange}
-                className="input-field" placeholder="Ex: Sonatel, Orange, CTIC..." required />
+              <select name="entreprise" value={form.entreprise} onChange={handleChange}
+  className="input-field" required>
+  <option value="">-- Selectionnez une entreprise --</option>
+  <option>Sonatel</option>
+  <option>Orange Senegal</option>
+  <option>Expresso Senegal</option>
+  <option>Free Senegal</option>
+  <option>CTIC Dakar</option>
+  <option>Gainde 2000</option>
+  <option>Volkeno</option>
+  <option>Intech</option>
+  <option>Dexchange</option>
+  <option>Wave Mobile Money</option>
+  <option>Wari</option>
+  <option>InTouch</option>
+  <option>La Poste Senegal</option>
+  <option>Banque de Dakar</option>
+  <option>Ecobank Senegal</option>
+  <option>SGBS</option>
+  <option>Total Energies Senegal</option>
+  <option>Sapco</option>
+  <option>Ageroute</option>
+  <option>ADIE</option>
+  <option>Autre</option>
+</select>
             </div>
             <div className="md:col-span-2">
               <label className="label">Adresse de l'entreprise</label>
