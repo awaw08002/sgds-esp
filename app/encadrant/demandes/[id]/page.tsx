@@ -271,7 +271,7 @@ export default function EncadrantValidationPage() {
                         <span className="truncate max-w-[120px]">{p.nomfichier}</span>
                       </div>
                       <a
-                        href={'/api/pieces-jointes/download?path=' + encodeURIComponent(p.cheminfichier || '')}
+                        href={'/api/pieces-jointes/download?path=' + encodeURIComponent(p.cheminofichier || '')}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-[#F59E0B] hover:text-[#D97706] font-semibold text-xs transition-colors flex-shrink-0 ml-2">
