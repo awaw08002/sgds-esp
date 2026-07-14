@@ -28,8 +28,8 @@ export async function GET(req: Request) {
 
   return new NextResponse(buffer, {
     headers: {
-      'Content-Type': 'application/pdf',
-      'Content-Disposition': `inline; filename="${path.split('/').pop()}"`,
+      'Content-Type': 'application/octet-stream',
+      'Content-Disposition': `attachment; filename="${path.split('/').pop()}"`,
     },
   })
 }
