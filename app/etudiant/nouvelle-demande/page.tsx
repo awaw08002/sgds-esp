@@ -9,7 +9,7 @@ import { createClient } from '@/lib/supabase'
 
 export default function NouvelleDemandePage() {
   const [form, setForm] = useState({
-    entreprise: '', adresseEntreprise: '', dateDebut: '',
+    entreprise: '', Niveau: '', dateDebut: '',
     dateFin: '', objectifsStage: '',
   })
   const [fichiers, setFichiers] = useState<File[]>([])
@@ -40,7 +40,7 @@ export default function NouvelleDemandePage() {
       const { data: demande, error: dErr } = await supabase.from('demande_stage').insert({
         referenceunique: ref,
         entreprise: form.entreprise,
-        adresseentreprise: form.adresseEntreprise,
+        Niveau: form.Niveau,
         datedebut: form.dateDebut,
         datefin: form.dateFin,
         objectifsstage: form.objectifsStage,
@@ -137,9 +137,9 @@ if (insertError) console.error('Insert piece jointe error:', insertError)
 </select>
             </div>
             <div className="md:col-span-2">
-              <label className="label">Adresse de l'entreprise</label>
-              <select name="adresseEntreprise" value={form.adresseEntreprise}
-  onChange={(e) => setForm(prev => ({ ...prev, adresseEntreprise: e.target.value }))}
+              <label className="label">Niveau</label>
+              <select name="adresseEntreprise" value={form.Niveau}
+  onChange={(e) => setForm(prev => ({ ...prev, Niveau: e.target.value }))}
   className="input-field">
   <option value="">-- Niveau d'étude --</option>
   <option>L1</option>
