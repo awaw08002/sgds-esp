@@ -177,7 +177,7 @@ export default function EncadrantValidationPage() {
                 {[
                   ['Reference', demande.referenceunique],
                   ['Entreprise', demande.entreprise],
-                  ['Adresse', demande.adresseentreprise || 'Non precisee'],
+                  ['Niveau', demande.Niveau || 'Non precisee'],
                   ['Periode',
                     format(new Date(demande.datedebut), 'dd/MM/yyyy', { locale: fr }) +
                     ' au ' +
