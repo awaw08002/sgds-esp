@@ -56,13 +56,14 @@ export default function NouvelleDemandePage() {
         const path = demande.id_demande + '/' + fichier.name
         const { error: uploadError } = await supabase.storage.from('pieces-jointes').upload(path, fichier)
 if (uploadError) console.error('Upload error:', uploadError)
-        await supabase.from('piece_jointe').insert({
-          typeDocument: fichier.name.endsWith('.pdf') ? 'PDF' : 'Document',
-          nomFichier: fichier.name,
-          cheminFichier: path,
-          dateDepot: new Date().toISOString(),
-          id_demande: demande.id_demande,
-        })
+        const { error: insertError } = await supabase.from('piece_jointe').insert({
+  typedocument: fichier.name.endsWith('.pdf') ? 'PDF' : 'Document',
+  nomfichier: fichier.name,
+  cheminofichier: path,
+  datedepot: new Date().toISOString(),
+  id_demande: demande.id_demande,
+})
+if (insertError) console.error('Insert piece jointe error:', insertError)
       }
 
       // Notification encadrant (si assigne)
