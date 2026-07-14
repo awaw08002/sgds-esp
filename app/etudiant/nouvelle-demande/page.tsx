@@ -59,7 +59,7 @@ if (uploadError) console.error('Upload error:', uploadError)
         const { error: insertError } = await supabase.from('piece_jointe').insert({
   typedocument: fichier.name.endsWith('.pdf') ? 'PDF' : 'Document',
   nomfichier: fichier.name,
-  cheminofichier: path,
+  cheminfichier: path,
   datedepot: new Date().toISOString(),
   id_demande: demande.id_demande,
 })
