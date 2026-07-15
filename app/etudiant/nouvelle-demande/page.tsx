@@ -9,7 +9,7 @@ import { createClient } from '@/lib/supabase'
 
 export default function NouvelleDemandePage() {
   const [form, setForm] = useState({
-    entreprise: '', adresseEntreprise: '', dateDebut: '',
+    entreprise: '', dateDebut: '',
     dateFin: '', objectifsStage: '',
   })
   const [fichiers, setFichiers] = useState<File[]>([])
@@ -46,7 +46,6 @@ export default function NouvelleDemandePage() {
         .insert({
           referenceunique: ref,
           entreprise: form.entreprise,
-          adresseentreprise: form.adresseEntreprise,
           datedebut: form.dateDebut,
           datefin: form.dateFin,
           objectifsstage: form.objectifsStage,
@@ -130,7 +129,6 @@ export default function NouvelleDemandePage() {
             <div className="md:col-span-2">
               <label className="label">Nom de l'entreprise *</label>
               <select
-                name="entreprise"
                 value={form.entreprise}
                 onChange={(e) => setForm(prev => ({ ...prev, entreprise: e.target.value }))}
                 className="input-field"
@@ -156,37 +154,6 @@ export default function NouvelleDemandePage() {
                 <option>Sapco</option>
                 <option>Ageroute</option>
                 <option>ADIE</option>
-                <option>Autre</option>
-              </select>
-            </div>
-
-            {/* Adresse */}
-            <div className="md:col-span-2">
-              <label className="label">Adresse de l'entreprise</label>
-              <select
-                name="adresseEntreprise"
-                value={form.adresseEntreprise}
-                onChange={(e) => setForm(prev => ({ ...prev, adresseEntreprise: e.target.value }))}
-                className="input-field">
-                <option value="">-- Selectionnez une adresse --</option>
-                <option>Plateau, Dakar</option>
-                <option>Almadies, Dakar</option>
-                <option>Mermoz, Dakar</option>
-                <option>Fann, Dakar</option>
-                <option>Point E, Dakar</option>
-                <option>Ouakam, Dakar</option>
-                <option>Yoff, Dakar</option>
-                <option>Ngor, Dakar</option>
-                <option>Sacre Coeur, Dakar</option>
-                <option>Grand Yoff, Dakar</option>
-                <option>Parcelles Assainies, Dakar</option>
-                <option>Pikine, Dakar</option>
-                <option>Guediawaye, Dakar</option>
-                <option>Rufisque, Dakar</option>
-                <option>Thies</option>
-                <option>Saint-Louis</option>
-                <option>Ziguinchor</option>
-                <option>Kaolack</option>
                 <option>Autre</option>
               </select>
             </div>
