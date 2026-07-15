@@ -239,11 +239,10 @@ export default function InscriptionPage() {
             {/* Role */}
             <div>
               <label className="block text-sm font-semibold text-[#1E3A5F] mb-1.5">Je suis *</label>
-              <select name="role" value={form.role} onChange={handleChange}
-                className="w-full border border-slate-300 rounded-xl px-4 py-3 text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#F59E0B] focus:border-transparent text-sm bg-white">
-                <option value="etudiant">Etudiant</option>
-                <option value="encadrant">Encadrant pedagogique</option>
-              </select>
+              <div className="w-full border border-slate-300 rounded-xl px-4 py-3 text-slate-800 bg-slate-50 text-sm">
+  Etudiant
+</div>
+<input type="hidden" name="role" value="etudiant" />
             </div>
 
             {/* Prenom + Nom */}
