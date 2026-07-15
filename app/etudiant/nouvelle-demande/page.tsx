@@ -136,20 +136,7 @@ if (insertError) console.error('Insert piece jointe error:', insertError)
   <option>Autre</option>
 </select>
             </div>
-            <div className="md:col-span-2">
-              <label className="label">Niveau</label>
-              <select name="adresseEntreprise" value={form.Niveau}
-  onChange={(e) => setForm(prev => ({ ...prev, Niveau: e.target.value }))}
-  className="input-field">
-  <option value="">-- Niveau d'étude --</option>
-  <option>L1</option>
-  <option>L2</option>
-  <option>L3</option>
-  <option>M1</option>
-  <option>M2</option>
-  <option>Autre</option>
-</select>
-            </div>
+            
             <div>
               <label className="label">Date de debut *</label>
               <input type="date" name="dateDebut" value={form.dateDebut} onChange={handleChange}
