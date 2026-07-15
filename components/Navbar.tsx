@@ -9,6 +9,7 @@ export default function Navbar() {
   const [user, setUser] = useState<any>(null)
   const [role, setRole] = useState<string | null>(null)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [showLogoutModal, setShowLogoutModal] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
@@ -35,13 +36,11 @@ export default function Navbar() {
     })
   }, [])
 
-  const [showLogoutModal, setShowLogoutModal] = useState(false)
-
-const handleLogout = async () => {
-  await supabase.auth.signOut()
-  router.push('/login')
-  router.refresh()
-}
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+    router.push('/login')
+    router.refresh()
+  }
 
   const dashboardLink = () => {
     switch (role) {
@@ -79,7 +78,6 @@ const handleLogout = async () => {
               <span className={`font-bold text-base block leading-none transition-colors ${textColor}`}>
                 Gestion des Demandes de Stages
               </span>
-
             </div>
           </Link>
 
@@ -123,7 +121,7 @@ const handleLogout = async () => {
               <>
                 <NotificationBell userId={user.id} />
                 <button
-                  onClick={handleLogout}
+                  onClick={() => setShowLogoutModal(true)}
                   className={`text-sm font-medium transition-colors ${linkColor}`}
                 >
                   Deconnexion
@@ -166,55 +164,68 @@ const handleLogout = async () => {
           <div className="md:hidden bg-white border-t border-slate-100 py-4 space-y-1 shadow-lg rounded-b-xl">
             {!user ? (
               <>
-                <Link href="/#comment-ca-marche" className="block px-4 py-2 text-[#64748B] hover:text-[#1E3A5F] hover:bg-slate-50 rounded-lg text-sm font-medium">Comment ca marche</Link>
-                <Link href="/offres"              className="block px-4 py-2 text-[#64748B] hover:text-[#1E3A5F] hover:bg-slate-50 rounded-lg text-sm font-medium">Offres de stage</Link>
+                <Link href="/#comment-ca-marche" className="block px-4 py-2 text-[#64748B] hover:text-[#1E3A5F] hover:bg-slate-50 rounded-lg text-sm font-medium">
+                  Comment ca marche
+                </Link>
+                <Link href="/offres" className="block px-4 py-2 text-[#64748B] hover:text-[#1E3A5F] hover:bg-slate-50 rounded-lg text-sm font-medium">
+                  Offres de stage
+                </Link>
                 <div className="border-t border-slate-100 pt-3 mt-3 flex flex-col gap-2 px-4">
-                  <Link href="/login"    className="block border border-slate-200 text-[#1E3A5F] font-semibold py-2.5 rounded-xl text-sm text-center hover:bg-slate-50 transition-colors">Se connecter</Link>
-                  <Link href="/inscription" className="block bg-[#F59E0B] text-white font-bold py-2.5 rounded-xl text-sm text-center hover:bg-[#D97706] transition-colors">S'inscrire</Link>
+                  <Link href="/login" className="block border border-slate-200 text-[#1E3A5F] font-semibold py-2.5 rounded-xl text-sm text-center hover:bg-slate-50 transition-colors">
+                    Se connecter
+                  </Link>
+                  <Link href="/inscription" className="block bg-[#F59E0B] text-white font-bold py-2.5 rounded-xl text-sm text-center hover:bg-[#D97706] transition-colors">
+                    S'inscrire
+                  </Link>
                 </div>
               </>
             ) : (
               <>
-                <Link href={dashboardLink()} className="block px-4 py-2 text-[#64748B] hover:text-[#1E3A5F] rounded-lg text-sm font-medium">Tableau de bord</Link>
+                <Link href={dashboardLink()} className="block px-4 py-2 text-[#64748B] hover:text-[#1E3A5F] rounded-lg text-sm font-medium">
+                  Tableau de bord
+                </Link>
                 <button
-  onClick={() => setShowLogoutModal(true)}
-  className="text-blue-200 hover:text-white text-sm font-medium transition-colors"
->
-  Deconnexion
-</button>
-
-{showLogoutModal && (
-  <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-    <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full text-center">
-      <div className="w-14 h-14 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
-        <svg className="w-7 h-7 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-        </svg>
-      </div>
-      <h3 className="text-xl font-black text-[#1E3A5F] mb-2">Deconnexion</h3>
-      <p className="text-[#64748B] text-sm mb-6">
-        Voulez-vous vraiment vous deconnecter de votre espace SGDS ?
-      </p>
-      <div className="flex gap-3">
-        <button
-          onClick={() => setShowLogoutModal(false)}
-          className="flex-1 border-2 border-slate-200 text-[#64748B] font-semibold py-3 rounded-xl hover:border-[#1E3A5F] hover:text-[#1E3A5F] transition-colors">
-          Annuler
-        </button>
-        <button
-          onClick={handleLogout}
-          className="flex-1 bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl transition-colors">
-          Se deconnecter
-        </button>
-      </div>
-    </div>
-  </div>
-)}
+                  onClick={() => setShowLogoutModal(true)}
+                  className="block w-full text-left px-4 py-2 text-[#64748B] hover:text-[#1E3A5F] hover:bg-slate-50 rounded-lg text-sm font-medium"
+                >
+                  Deconnexion
+                </button>
               </>
             )}
           </div>
         )}
       </div>
+
+      {/* Modal de confirmation de déconnexion */}
+      {showLogoutModal && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full text-center">
+            <div className="w-14 h-14 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-7 h-7 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-black text-[#1E3A5F] mb-2">Deconnexion</h3>
+            <p className="text-[#64748B] text-sm mb-6">
+              Voulez-vous vraiment vous deconnecter de votre espace SGDS ?
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowLogoutModal(false)}
+                className="flex-1 border-2 border-slate-200 text-[#64748B] font-semibold py-3 rounded-xl hover:border-[#1E3A5F] hover:text-[#1E3A5F] transition-colors"
+              >
+                Annuler
+              </button>
+              <button
+                onClick={handleLogout}
+                className="flex-1 bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl transition-colors"
+              >
+                Se deconnecter
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </nav>
   )
 }
