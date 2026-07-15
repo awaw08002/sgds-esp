@@ -36,9 +36,13 @@ export default function AdminDashboard() {
   useEffect(() => { load() }, [])
 
   const toggleActif = async (id: string, actif: boolean) => {
-    await supabase.from('utilisateur').update({ actif: !actif }).eq('id_utilisateur', id)
-    load()
-  }
+  const res = await fetch('/api/utilisateurs', {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id, actif: !actif })
+  })
+  if (res.ok) load()
+}
 
   const createUser = async () => {
     if (!newUser.email || !newUser.password || !newUser.nom) return

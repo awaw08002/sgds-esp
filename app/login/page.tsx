@@ -26,11 +26,18 @@ export default function LoginPage() {
       return
     }
     if (data.user) {
-      const { data: util } = await supabase
-        .from('utilisateur')
-        .select('role')
-        .eq('id_utilisateur', data.user.id)
-        .single()
+  const { data: util } = await supabase
+    .from('utilisateur')
+    .select('role, actif')
+    .eq('id_utilisateur', data.user.id)
+    .single()
+
+  if (!util?.actif) {
+    await supabase.auth.signOut()
+    setError('Votre compte a ete desactive. Contactez l administrateur.')
+    setLoading(false)
+    return
+  }
       const roleMap: Record<string, string> = {
         etudiant: '/etudiant/dashboard',
         encadrant: '/encadrant/dashboard',
